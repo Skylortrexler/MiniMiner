@@ -20,4 +20,9 @@ public class MiniMinerRenderer extends GeoBlockRenderer<MiniMinerBlockEntity> {
                                      Identifier textureLocation) {
         return RenderLayer.getEntityCutout(getTextureLocation(animatable));
     }
+
+    @Override
+    public void renderLate(MiniMinerBlockEntity animatable, MatrixStack stackIn, float ticks, VertexConsumerProvider renderTypeBuffer, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
+        super.renderLate(animatable, stackIn, ticks, renderTypeBuffer, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
+    }
 }
