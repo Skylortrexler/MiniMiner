@@ -1211,7 +1211,7 @@
 							"vector": [0, 0, 0]
 						},
 						"4.16": {
-							"vector": [0, "1-", 0],
+							"vector": [0, 2, 0],
 							"easing": "easeInOutBack"
 						},
 						"8.32": {
@@ -1219,7 +1219,7 @@
 							"easing": "easeInOutBack"
 						},
 						"12.48": {
-							"vector": [0, 1, 0],
+							"vector": [0, 2, 0],
 							"easing": "easeInOutBack"
 						},
 						"16.64": {
