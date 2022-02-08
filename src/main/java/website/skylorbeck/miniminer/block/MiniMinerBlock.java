@@ -26,8 +26,8 @@ public class MiniMinerBlock extends Block implements BlockEntityProvider {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof MiniMinerBlockEntity miniMiner) {//todo open inventory here
                 Integer fuel = FuelRegistry.INSTANCE.get(player.getStackInHand(hand).getItem());
-                if (fuel!=null && fuel>0 && miniMiner.getFuelAmount()==0) {
-                    miniMiner.getFuelInventory().setStack(0,new ItemStack(player.getStackInHand(hand).getItem(),1));
+                if (fuel!=null && fuel>0 && miniMiner.getFuelAmount()==0 && miniMiner.isEmpty()) {
+                    miniMiner.setStack(0,new ItemStack(player.getStackInHand(hand).getItem(),1));
                     player.getStackInHand(hand).decrement(1);
                 }
                 return ActionResult.SUCCESS;
