@@ -7,8 +7,8 @@ import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
 import website.skylorbeck.miniminer.Declarar;
-import website.skylorbeck.miniminer.item.MiniMinerItemRenderer;
 import website.skylorbeck.miniminer.entity.MiniMinerRenderer;
+import website.skylorbeck.miniminer.item.MiniMinerItemRenderer;
 
 @Environment(EnvType.CLIENT)
 public class MiniminerClient implements ClientModInitializer {

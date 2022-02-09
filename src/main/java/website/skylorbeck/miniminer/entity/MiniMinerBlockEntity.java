@@ -1,30 +1,26 @@
 package website.skylorbeck.miniminer.entity;
 
-import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
-import net.fabricmc.fabric.impl.transfer.item.InventoryStorageImpl;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
-import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -36,6 +32,12 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import website.skylorbeck.minecraft.skylorlib.storage.StorageUtils;
 import website.skylorbeck.miniminer.Declarar;
+import website.skylorbeck.miniminer.Miniminer;
+
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, Inventory {
     public MiniMinerBlockEntity( BlockPos pos, BlockState state) {
@@ -47,49 +49,94 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
     protected DefaultedList<ItemStack> fuelInventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
     private int fuelAmount = 0;
     private int digAmount = 0;
+    private int totalMined = 0;
 
     public static void tick(World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
-        MiniMinerBlockEntity entity = (MiniMinerBlockEntity) blockEntity;//(MiniMinerBlockEntity) world.getBlockEntity(pos);
-        Item item = entity.fuelInventory.get(0).getItem();//get the item in the inventory
-        Integer fuel = FuelRegistry.INSTANCE.get(item);//get the fuel value of the item
-        int fuelAmount = entity.getFuelAmount();//get the fuel amount
+        MiniMinerBlockEntity entity = (MiniMinerBlockEntity) blockEntity;
+        Item item = entity.fuelInventory.get(0).getItem();
+        Integer fuel = FuelRegistry.INSTANCE.get(item);
+        int fuelAmount = entity.getFuelAmount();
 
-        if (fuel != null && fuelAmount==0 && fuel > 0 ) {//if the item is a fuel item and has a fuel value
-            entity.setFuelAmount(FuelRegistry.INSTANCE.get(item));//returns the fuel value of the item
-            entity.setMachineStateOn(true);//turn on the machine
-            entity.removeStack(0, 1);//remove the item from the inventory
+        if (fuel != null && fuelAmount == 0 && fuel > 0) {
+            entity.setFuelAmount(FuelRegistry.INSTANCE.get(item));
+            entity.setMachineStateOn(true);
+            entity.removeStack(0, 1);
         }
-        if (fuelAmount > 0) {//if the fuel amount is greater than 0
-            entity.setDigAmount(entity.getDigAmount() + 1);//add 1 to the dig amount
-            entity.setFuelAmount(--fuelAmount);//decrement the fuel amount and set it
-            if (fuelAmount == 0) {//if the fuel amount is 0
-                entity.setMachineStateOn(false);//turn off the machine
+        if (fuelAmount > 0) {
+            entity.setDigAmount(entity.getDigAmount() + 1);
+            entity.setFuelAmount(--fuelAmount);
+            if (fuelAmount == 0) {
+                entity.setMachineStateOn(false);
             }
-            ItemStack reward = new ItemStack(world.getBlockState(pos.down()).getBlock());
+            AtomicReference<ItemStack> reward = new AtomicReference<>(ItemStack.EMPTY);
 
-            if (entity.getDigAmount() >= 200) {//if the dig amount is 20
-                BlockPos upOne = pos.up(1);//get the block above the block
-                if (world.getBlockEntity(upOne) != null && world.getBlockState(upOne).getBlock() instanceof ChestBlock chestBlock) {//if the block above is a chest
-                    Inventory chestInventory = ChestBlock.getInventory(chestBlock, world.getBlockState(upOne), world, upOne, false);//get the chest inventory
-                    for (int i = 0; i < chestInventory.size(); i++) {//for each slot in the chest inventory
-                        if (StorageUtils.canInsert(chestInventory, reward, i, Direction.UP)) {//if the item can be inserted into the chest
-                            StorageUtils.transfer(chestInventory, reward, i, Direction.UP);//transfer the item to the chest
-                            entity.setDigAmount(0);//set the dig amount to 0
+            if (entity.getDigAmount() >= 200) {
+                Iterable<BlockPos> blockPosIterable = BlockPos.iterateOutwards(pos,3,3,3);
+                for (BlockPos blockPos : blockPosIterable) {
+                    if (blockPos.getY() < pos.getY()) {
+                        boolean found = false;
+                        for (int i = 0; i < Miniminer.config.minerOreRewardMap.size(); i++) {
+                            Miniminer.MinerOreRewardMap minerOreRewardMap = Miniminer.config.minerOreRewardMap.get(i);
+                            Identifier ore = new Identifier(minerOreRewardMap.getOre());
+                            Miniminer.MinerOreRewardMap.WeightedReward[] weightedRewards = minerOreRewardMap.getReward();
+                            if (world.getBlockState(blockPos).getBlock().asItem().getDefaultStack().isOf(Registry.ITEM.get(ore))) {
+                                int totalWeight = 0;
+                                for (Miniminer.MinerOreRewardMap.WeightedReward value : weightedRewards) {
+                                    totalWeight += value.getWeight();
+                                }
+                                int random = world.random.nextInt(totalWeight) + 1;
+                                int currentWeight = 0;
+                                for (Miniminer.MinerOreRewardMap.WeightedReward weightedReward : weightedRewards) {
+                                    if (currentWeight + weightedReward.getWeight() >= random) {
+                                        reward.set(new ItemStack(Registry.ITEM.get(new Identifier(weightedReward.getItem()))));
+                                        found = true;
+                                        break;
+                                    }
+                                    currentWeight += weightedReward.getWeight();
+                                }
+                                entity.setTotalMined(entity.getTotalMined() + 1);
+                                if (entity.getTotalMined() > minerOreRewardMap.getDepleteAt() && world.random.nextInt(entity.getTotalMined()) > minerOreRewardMap.getDepleteAt()) {
+//                                    Logger.getGlobal().log(Level.SEVERE,"Depleted "+blockPos+" at "+entity.getTotalMined());
+                                    entity.setTotalMined(0);
+                                    world.setBlockState(blockPos, Registry.BLOCK.get(new Identifier(minerOreRewardMap.getDepleted())).getDefaultState());
+                                }
+                                break;
+                            }
+                        }
+                        if (found) {
+                            break;
+                        }
+                    }
+                }
 
+                if (reward.get().equals(ItemStack.EMPTY)){
+                    entity.setDigAmount(0);
+                    return;
+                }
+                BlockPos upOne = pos.up(1);
+                if (world.getBlockEntity(upOne) != null && world.getBlockState(upOne).getBlock() instanceof ChestBlock chestBlock) {
+                    Inventory chestInventory = ChestBlock.getInventory(chestBlock, world.getBlockState(upOne), world, upOne, false);
+                    for (int i = 0; i < chestInventory.size(); ++i) {
+                        if (StorageUtils.canMergeItems(chestInventory.getStack(i), reward.get())) {
+                            transfer(chestInventory, reward.get(), i, Direction.UP);
+                            break;
+                        }
+                        if (chestInventory.getStack(i).isEmpty()) {
+                            transfer(chestInventory, reward.get(), i, Direction.UP);
                             break;
                         }
                     }
                 } else {
-                    ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), reward);//create a new item entity
-                    itemEntity.setPos(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);//set the position of the item entity
-                    itemEntity.setVelocity(world.random.nextFloat(-1f, 1f), 0, world.random.nextFloat(-1f, 1f));//set the velocity of the item entity to 0,1,0
-                    world.spawnEntity(itemEntity);//spawn the item
-                    entity.setDigAmount(0);//set the dig amount to 0
+                    ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), reward.get());
+                    itemEntity.setPos(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
+                    itemEntity.setVelocity(world.random.nextFloat(-1f, 1f), 0, world.random.nextFloat(-1f, 1f));
+                    world.spawnEntity(itemEntity);
                 }
+                entity.setDigAmount(0);
 
             }
             if (!world.isClient)
-            ((ServerWorld) world).getChunkManager().markForUpdate(pos);//mark the block for update
+                ((ServerWorld) world).getChunkManager().markForUpdate(pos);
             markDirty(world, pos, state);
         }
     }
@@ -110,6 +157,7 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
         nbt.putBoolean("MachineStateOn", isMachineStateOn());
         nbt.putInt("FuelAmount", getFuelAmount());
         nbt.putInt("DigAmount", getDigAmount());
+        nbt.putInt("TotalMined", getTotalMined());
         Inventories.writeNbt(nbt, getFuelInventory(), isEmpty());
         super.writeNbt(nbt);
     }
@@ -119,8 +167,17 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
         setMachineStateOn(nbt.getBoolean("MachineStateOn"));
         setFuelAmount(nbt.getInt("FuelAmount"));
         setDigAmount(nbt.getInt("DigAmount"));
+        setTotalMined(nbt.getInt("TotalMined"));
         Inventories.readNbt(nbt, this.fuelInventory);
         super.readNbt(nbt);
+    }
+
+    public int getTotalMined() {
+        return totalMined;
+    }
+
+    public void setTotalMined(int totalMined) {
+        this.totalMined = totalMined;
     }
 
     public DefaultedList<ItemStack> getFuelInventory() {
@@ -216,5 +273,19 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
     @Override
     public void clear() {
         fuelInventory.clear();
+    }
+    private static void transfer(Inventory to, ItemStack stack, int slot, @Nullable Direction side) {
+        ItemStack itemStack = to.getStack(slot);
+        if (StorageUtils.canInsert(to, stack, slot, side)) {
+            if (itemStack.isEmpty()) {
+                to.setStack(slot, stack);
+                stack = ItemStack.EMPTY;
+            } else if (StorageUtils.canMergeItems(itemStack, stack)) {
+                int i = stack.getMaxCount() - itemStack.getCount();
+                int j = Math.min(stack.getCount(), i);
+                stack.decrement(j);
+                itemStack.increment(j);
+            }
+        }
     }
 }

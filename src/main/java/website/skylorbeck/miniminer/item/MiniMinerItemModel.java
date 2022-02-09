@@ -4,7 +4,6 @@ import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import website.skylorbeck.miniminer.Miniminer;
-import website.skylorbeck.miniminer.entity.MiniMinerBlockEntity;
 
 public class MiniMinerItemModel extends AnimatedGeoModel<MiniMinerItem> {
     @Override

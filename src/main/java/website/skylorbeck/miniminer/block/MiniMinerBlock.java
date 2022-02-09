@@ -1,12 +1,13 @@
 package website.skylorbeck.miniminer.block;
 
-import net.fabricmc.fabric.api.registry.FuelRegistry;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -24,12 +25,8 @@ public class MiniMinerBlock extends Block implements BlockEntityProvider {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof MiniMinerBlockEntity miniMiner) {//todo open inventory here
-                Integer fuel = FuelRegistry.INSTANCE.get(player.getStackInHand(hand).getItem());
-                if (fuel!=null && fuel>0 && miniMiner.getFuelAmount()==0 && miniMiner.isEmpty()) {
-                    miniMiner.setStack(0,new ItemStack(player.getStackInHand(hand).getItem(),1));
-                    player.getStackInHand(hand).decrement(1);
-                }
+            if (blockEntity instanceof MiniMinerBlockEntity miniMiner) {
+                //todo open inventory here
                 return ActionResult.SUCCESS;
             }
         return super.onUse(state, world, pos, player, hand, hit);

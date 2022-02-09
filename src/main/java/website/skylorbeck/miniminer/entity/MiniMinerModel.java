@@ -1,8 +1,6 @@
 package website.skylorbeck.miniminer.entity;
 
 import net.minecraft.util.Identifier;
-import software.bernie.example.block.tile.BotariumTileEntity;
-import software.bernie.geckolib3.GeckoLib;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import website.skylorbeck.miniminer.Miniminer;

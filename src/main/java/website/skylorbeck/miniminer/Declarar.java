@@ -1,22 +1,16 @@
 package website.skylorbeck.miniminer;
 
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
-import net.fabricmc.fabric.api.item.v1.FabricItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.registry.Registry;
-import software.bernie.example.block.tile.BotariumTileEntity;
-import software.bernie.example.registry.BlockRegistry;
-import software.bernie.geckolib3.GeckoLib;
 import website.skylorbeck.miniminer.block.MiniMinerBlock;
 import website.skylorbeck.miniminer.entity.MiniMinerBlockEntity;
 import website.skylorbeck.miniminer.item.MiniMinerItem;
