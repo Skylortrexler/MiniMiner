@@ -70,8 +70,8 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
             }
             AtomicReference<ItemStack> reward = new AtomicReference<>(ItemStack.EMPTY);
 
-            if (!world.isClient && entity.getDigAmount() >= 20) {
-                Iterable<BlockPos> blockPosIterable = BlockPos.iterateOutwards(pos,3,3,3);
+            if (!world.isClient && entity.getDigAmount() >= 200) {
+                Iterable<BlockPos> blockPosIterable = BlockPos.iterateOutwards(pos,Miniminer.config.mining_radius,Miniminer.config.mining_radius,Miniminer.config.mining_radius);
                 for (int i = 0; i < Miniminer.config.minerOreRewardMap.size(); i++) {
                     Miniminer.MinerOreRewardMap minerOreRewardMap = Miniminer.config.minerOreRewardMap.get(i);
                     Identifier ore = new Identifier(minerOreRewardMap.getOre());
@@ -171,6 +171,11 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
         setTotalMined(nbt.getInt("TotalMined"));
         Inventories.readNbt(nbt, this.fuelInventory);
         super.readNbt(nbt);
+    }
+
+    @Override
+    public boolean isValid(int slot, ItemStack stack) {
+        return FuelRegistry.INSTANCE.get(stack.getItem())>0 && Inventory.super.isValid(slot, stack);
     }
 
     public int getTotalMined() {
