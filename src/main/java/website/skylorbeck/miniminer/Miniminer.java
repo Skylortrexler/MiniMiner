@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import static website.skylorbeck.miniminer.Miniminer.MinerOreRewardMap.WeightedReward.createReward;
 
 public class Miniminer implements ModInitializer {
     public static Config config = new Config();
@@ -25,15 +28,152 @@ public class Miniminer implements ModInitializer {
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.setPrettyPrinting();
             Gson gson = gsonBuilder.create();
-            config.minerOreRewardMap.add(
+            config.add(
+                    new MinerOreRewardMap(
+                            "minecraft:deepslate_diamond_ore",
+                            4,
+                            "minecraft:deepslate",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:diamond",5),
+                                    createReward("minecraft:cobbled_deepslate",3)
+                            }),
+                    new MinerOreRewardMap(
+                            "minecraft:diamond_ore",
+                            4,
+                            "minecraft:stone",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:diamond",5),
+                                    createReward("minecraft:cobblestone",3)
+                            }),
+                    new MinerOreRewardMap(
+                            "minecraft:deepslate_lapis_ore",
+                            6,
+                            "minecraft:deepslate",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:lapis_lazuli",5),
+                                    createReward("minecraft:cobbled_deepslate",3)
+                            }),
+                    new MinerOreRewardMap(
+                            "minecraft:lapis_ore",
+                            6,
+                            "minecraft:stone",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:lapis_lazuli",5),
+                                    createReward("minecraft:cobblestone",3)
+                            }),
+                    new MinerOreRewardMap(
+                            "minecraft:deepslate_emerald_ore",
+                            4,
+                            "minecraft:deepslate",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:emerald",5),
+                                    createReward("minecraft:cobbled_deepslate",3)
+                            }),
+                    new MinerOreRewardMap(
+                            "minecraft:emerald_ore",
+                            4,
+                            "minecraft:stone",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:emerald",5),
+                                    createReward("minecraft:cobblestone",3)
+                            }),
+                    new MinerOreRewardMap(
+                            "minecraft:deepslate_redstone_ore",
+                            6,
+                            "minecraft:deepslate",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:redstone",5),
+                                    createReward("minecraft:cobbled_deepslate",3)
+                            }),
+                    new MinerOreRewardMap(
+                            "minecraft:redstone_ore",
+                            6,
+                            "minecraft:stone",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:redstone",5),
+                                    createReward("minecraft:cobblestone",3)
+                            }),
+                    new MinerOreRewardMap(
+                            "minecraft:deepslate_gold_ore",
+                            4,
+                            "minecraft:deepslate",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:raw_gold",5),
+                                    createReward("minecraft:cobbled_deepslate",3)
+                            }),
+                    new MinerOreRewardMap(
+                            "minecraft:gold_ore",
+                            4,
+                            "minecraft:stone",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:raw_gold",5),
+                                    createReward("minecraft:cobblestone",3)
+                            }),
+                    new MinerOreRewardMap(
+                            "minecraft:deepslate_iron_ore",
+                            4,
+                            "minecraft:deepslate",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:raw_iron",5),
+                                    createReward("minecraft:cobbled_deepslate",3)
+                            }),
+                    new MinerOreRewardMap(
+                            "minecraft:iron_ore",
+                            4,
+                            "minecraft:stone",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:raw_iron",5),
+                                    createReward("minecraft:cobblestone",3)
+                            }),
+                    new MinerOreRewardMap(
+                            "minecraft:deepslate_copper_ore",
+                            8,
+                            "minecraft:deepslate",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:raw_copper",5),
+                                    createReward("minecraft:cobbled_deepslate",3)
+                            }),
+                    new MinerOreRewardMap(
+                            "minecraft:copper_ore",
+                            8,
+                            "minecraft:stone",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:raw_copper",5),
+                                    createReward("minecraft:cobblestone",3)
+                            }),
+                    new MinerOreRewardMap(
+                            "minecraft:deepslate_coal_ore",
+                            4,
+                            "minecraft:deepslate",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:coal", 5),
+                                    createReward("minecraft:cobbled_deepslate", 3)
+                            }),
                     new MinerOreRewardMap(
                             "minecraft:coal_ore",
                             4,
                             "minecraft:stone",
                             new MinerOreRewardMap.WeightedReward[]{
-                                    new MinerOreRewardMap.WeightedReward("minecraft:coal", 5),
-                                    new MinerOreRewardMap.WeightedReward("minecraft:cobblestone", 5)
-                            }));
+                                    createReward("minecraft:coal", 5),
+                                    createReward("minecraft:cobblestone", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "minecraft:deepslate",
+                            0,
+                            "minecraft:air",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:cobbled_deepslate", 9),
+                                    createReward("minecraft:coal", 1)
+                            }),
+                    new MinerOreRewardMap(
+                            "minecraft:stone",
+                            0,
+                            "minecraft:air",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:cobblestone", 9),
+                                    createReward("minecraft:coal", 1)
+                            })
+            );
             try {
                 Files.write(Paths.get("config/miniminer.json"), gson.toJson(config).getBytes());
             } catch (IOException e) {
@@ -52,6 +192,9 @@ public class Miniminer implements ModInitializer {
 
     public static class Config{
        public ArrayList<MinerOreRewardMap> minerOreRewardMap = new ArrayList<>();
+        public void add(MinerOreRewardMap... minerOreRewardMap){
+            this.minerOreRewardMap.addAll(Arrays.asList(minerOreRewardMap));
+        }
     }
 
     public static class MinerOreRewardMap{
@@ -84,6 +227,9 @@ public class Miniminer implements ModInitializer {
             public WeightedReward(String item, int weight) {
                 this.item = item;
                 this.weight = weight;
+            }
+            public static WeightedReward createReward(String item, int weight){
+                return new WeightedReward(item,weight);
             }
             public String getItem() {
                 return item;

@@ -70,15 +70,15 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
             }
             AtomicReference<ItemStack> reward = new AtomicReference<>(ItemStack.EMPTY);
 
-            if (entity.getDigAmount() >= 200) {
+            if (!world.isClient && entity.getDigAmount() >= 20) {
                 Iterable<BlockPos> blockPosIterable = BlockPos.iterateOutwards(pos,3,3,3);
-                for (BlockPos blockPos : blockPosIterable) {
-                    if (blockPos.getY() < pos.getY()) {
-                        boolean found = false;
-                        for (int i = 0; i < Miniminer.config.minerOreRewardMap.size(); i++) {
-                            Miniminer.MinerOreRewardMap minerOreRewardMap = Miniminer.config.minerOreRewardMap.get(i);
-                            Identifier ore = new Identifier(minerOreRewardMap.getOre());
-                            Miniminer.MinerOreRewardMap.WeightedReward[] weightedRewards = minerOreRewardMap.getReward();
+                for (int i = 0; i < Miniminer.config.minerOreRewardMap.size(); i++) {
+                    Miniminer.MinerOreRewardMap minerOreRewardMap = Miniminer.config.minerOreRewardMap.get(i);
+                    Identifier ore = new Identifier(minerOreRewardMap.getOre());
+                    Miniminer.MinerOreRewardMap.WeightedReward[] weightedRewards = minerOreRewardMap.getReward();
+                    boolean found = false;
+                    for (BlockPos blockPos : blockPosIterable) {
+                        if (blockPos.getY() < pos.getY()) {
                             if (world.getBlockState(blockPos).getBlock().asItem().getDefaultStack().isOf(Registry.ITEM.get(ore))) {
                                 int totalWeight = 0;
                                 for (Miniminer.MinerOreRewardMap.WeightedReward value : weightedRewards) {
@@ -95,17 +95,19 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
                                     currentWeight += weightedReward.getWeight();
                                 }
                                 entity.setTotalMined(entity.getTotalMined() + 1);
-                                if (entity.getTotalMined() > minerOreRewardMap.getDepleteAt() && world.random.nextInt(entity.getTotalMined()) > minerOreRewardMap.getDepleteAt()) {
+                                int depletesAt = minerOreRewardMap.getDepleteAt();
+                                if (depletesAt > 0 && entity.getTotalMined() > depletesAt && world.random.nextInt(entity.getTotalMined()) > depletesAt) {
 //                                    Logger.getGlobal().log(Level.SEVERE,"Depleted "+blockPos+" at "+entity.getTotalMined());
                                     entity.setTotalMined(0);
                                     world.setBlockState(blockPos, Registry.BLOCK.get(new Identifier(minerOreRewardMap.getDepleted())).getDefaultState());
+                                    world.markDirty(blockPos);
                                 }
                                 break;
                             }
                         }
-                        if (found) {
-                            break;
-                        }
+                    }
+                    if (found) {
+                        break;
                     }
                 }
 
@@ -126,14 +128,13 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
                             break;
                         }
                     }
-                } else {
+                } else if (!world.isClient){//necessary?
                     ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), reward.get());
                     itemEntity.setPos(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
                     itemEntity.setVelocity(world.random.nextFloat(-1f, 1f), 0, world.random.nextFloat(-1f, 1f));
                     world.spawnEntity(itemEntity);
                 }
                 entity.setDigAmount(0);
-
             }
             if (!world.isClient)
                 ((ServerWorld) world).getChunkManager().markForUpdate(pos);
