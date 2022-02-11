@@ -1,12 +1,12 @@
 package website.skylorbeck.miniminer.entity;
 
 import net.fabricmc.fabric.api.registry.FuelRegistry;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
@@ -15,7 +15,12 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.PropertyDelegate;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -30,17 +35,17 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import website.skylorbeck.minecraft.skylorlib.furnaces.AbstractExtraFurnaceBlockEntity;
 import website.skylorbeck.minecraft.skylorlib.storage.StorageUtils;
 import website.skylorbeck.miniminer.Declarar;
 import website.skylorbeck.miniminer.Miniminer;
+import website.skylorbeck.miniminer.screen.MiniMinerScreenHandler;
 
-import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, Inventory {
-    public MiniMinerBlockEntity( BlockPos pos, BlockState state) {
+public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, Inventory, NamedScreenHandlerFactory {
+
+    public MiniMinerBlockEntity(BlockPos pos, BlockState state) {
         super(Declarar.MINI_MINER_BLOCK_ENTITY_TYPE, pos, state);
     }
 
@@ -48,8 +53,36 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
     private boolean MachineStateOn = false;
     protected DefaultedList<ItemStack> fuelInventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
     private int fuelAmount = 0;
+    private int fuelAmountMax = 0;
     private int digAmount = 0;
     private int totalMined = 0;
+    private Text customName;
+    private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
+        public int get(int index) {
+            return switch (index) {
+                case 0 -> MiniMinerBlockEntity.this.fuelAmount;
+                case 1 -> MiniMinerBlockEntity.this.digAmount;
+                case 2 -> MiniMinerBlockEntity.this.totalMined;
+                case 3 -> MiniMinerBlockEntity.this.fuelAmountMax;
+                default -> 0;
+            };
+        }
+
+        public void set(int index, int value) {
+            switch (index) {
+                case 0 -> MiniMinerBlockEntity.this.fuelAmount = value;
+                case 1 -> MiniMinerBlockEntity.this.digAmount = value;
+                case 2 -> MiniMinerBlockEntity.this.totalMined = value;
+                case 3 -> MiniMinerBlockEntity.this.fuelAmountMax = value;
+            }
+
+        }
+
+        public int size() {
+            return 4;
+        }
+    };
+
 
     public static void tick(World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
         MiniMinerBlockEntity entity = (MiniMinerBlockEntity) blockEntity;
@@ -59,6 +92,7 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
 
         if (fuel != null && fuelAmount == 0 && fuel > 0) {
             entity.setFuelAmount(FuelRegistry.INSTANCE.get(item));
+            entity.setFuelAmountMax(FuelRegistry.INSTANCE.get(item));
             entity.setMachineStateOn(true);
             entity.removeStack(0, 1);
         }
@@ -71,7 +105,7 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
             AtomicReference<ItemStack> reward = new AtomicReference<>(ItemStack.EMPTY);
 
             if (!world.isClient && entity.getDigAmount() >= 200) {
-                Iterable<BlockPos> blockPosIterable = BlockPos.iterateOutwards(pos,Miniminer.config.mining_radius,Miniminer.config.mining_radius,Miniminer.config.mining_radius);
+                Iterable<BlockPos> blockPosIterable = BlockPos.iterateOutwards(pos, Miniminer.config.mining_radius, Miniminer.config.mining_radius, Miniminer.config.mining_radius);
                 for (int i = 0; i < Miniminer.config.minerOreRewardMap.size(); i++) {
                     Miniminer.MinerOreRewardMap minerOreRewardMap = Miniminer.config.minerOreRewardMap.get(i);
                     Identifier ore = new Identifier(minerOreRewardMap.getOre());
@@ -111,7 +145,7 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
                     }
                 }
 
-                if (reward.get().equals(ItemStack.EMPTY)){
+                if (reward.get().equals(ItemStack.EMPTY)) {
                     entity.setDigAmount(0);
                     return;
                 }
@@ -119,7 +153,7 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
                 if (world.getBlockEntity(upOne) != null && world.getBlockState(upOne).getBlock() instanceof ChestBlock chestBlock) {
                     Inventory chestInventory = ChestBlock.getInventory(chestBlock, world.getBlockState(upOne), world, upOne, false);
                     for (int i = 0; i < chestInventory.size(); ++i) {
-                        if (StorageUtils.canMergeItems(chestInventory.getStack(i), reward.get())) {
+                        if (canMergeItems(chestInventory.getStack(i), reward.get())) {
                             transfer(chestInventory, reward.get(), i, Direction.UP);
                             break;
                         }
@@ -128,7 +162,7 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
                             break;
                         }
                     }
-                } else if (!world.isClient){//necessary?
+                } else if (!world.isClient) {//necessary?
                     ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), reward.get());
                     itemEntity.setPos(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
                     itemEntity.setVelocity(world.random.nextFloat(-1f, 1f), 0, world.random.nextFloat(-1f, 1f));
@@ -157,9 +191,11 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
     protected void writeNbt(NbtCompound nbt) {
         nbt.putBoolean("MachineStateOn", isMachineStateOn());
         nbt.putInt("FuelAmount", getFuelAmount());
+        nbt.putInt("FuelAmountMax", getFuelAmountMax());
         nbt.putInt("DigAmount", getDigAmount());
         nbt.putInt("TotalMined", getTotalMined());
         Inventories.writeNbt(nbt, getFuelInventory(), isEmpty());
+        nbt.putString("CustomName", Text.Serializer.toJson(this.customName));
         super.writeNbt(nbt);
     }
 
@@ -167,15 +203,28 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
     public void readNbt(NbtCompound nbt) {
         setMachineStateOn(nbt.getBoolean("MachineStateOn"));
         setFuelAmount(nbt.getInt("FuelAmount"));
+        setFuelAmountMax(nbt.getInt("FuelAmountMax"));
         setDigAmount(nbt.getInt("DigAmount"));
         setTotalMined(nbt.getInt("TotalMined"));
         Inventories.readNbt(nbt, this.fuelInventory);
+        if (nbt.contains("CustomName", 8)) {
+            this.customName = Text.Serializer.fromJson(nbt.getString("CustomName"));
+        }
         super.readNbt(nbt);
     }
 
+
     @Override
     public boolean isValid(int slot, ItemStack stack) {
-        return FuelRegistry.INSTANCE.get(stack.getItem())>0 && Inventory.super.isValid(slot, stack);
+        return FuelRegistry.INSTANCE.get(stack.getItem()) != null && Inventory.super.isValid(slot, stack);
+    }
+
+    public int getFuelAmountMax() {
+        return fuelAmountMax;
+    }
+
+    public void setFuelAmountMax(int fuelAmountMax) {
+        this.fuelAmountMax = fuelAmountMax;
     }
 
     public int getTotalMined() {
@@ -231,7 +280,7 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(
-                new AnimationController<MiniMinerBlockEntity>(this, "controller", 10, this::predicate));
+                new AnimationController<>(this, "controller", 10, this::predicate));
     }
 
     @Override
@@ -246,29 +295,48 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
 
     @Override
     public boolean isEmpty() {
-        return fuelInventory.isEmpty();
+        for (ItemStack itemStack : this.fuelInventory) {
+            if (itemStack.isEmpty()) continue;
+            return false;
+        }
+        return true;
     }
 
     @Override
     public ItemStack getStack(int slot) {
-        return fuelInventory.get(slot);
+        if (slot < 0 || slot >= this.fuelInventory.size()) {
+            return ItemStack.EMPTY;
+        }
+        return this.fuelInventory.get(slot);
     }
+
 
     @Override
     public ItemStack removeStack(int slot, int amount) {
-        ItemStack itemStack = fuelInventory.get(slot);
-        itemStack.decrement(amount);
-        return fuelInventory.set(slot, itemStack);
+        ItemStack itemStack = Inventories.splitStack(this.fuelInventory, slot, amount);
+        if (!itemStack.isEmpty()) {
+            this.markDirty();
+        }
+        return itemStack;
     }
 
     @Override
     public ItemStack removeStack(int slot) {
-        return fuelInventory.remove(slot);
+        ItemStack itemStack = this.fuelInventory.get(slot);
+        if (itemStack.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+        this.fuelInventory.set(slot, ItemStack.EMPTY);
+        return itemStack;
     }
 
     @Override
     public void setStack(int slot, ItemStack stack) {
-        fuelInventory.set(slot, stack);
+        this.fuelInventory.set(slot, stack);
+        if (!stack.isEmpty() && stack.getCount() > this.getMaxCountPerStack()) {
+            stack.setCount(this.getMaxCountPerStack());
+        }
+        this.markDirty();
     }
 
     @Override
@@ -280,6 +348,7 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
     public void clear() {
         fuelInventory.clear();
     }
+
     private static void transfer(Inventory to, ItemStack stack, int slot, @Nullable Direction side) {
         ItemStack itemStack = to.getStack(slot);
         if (StorageUtils.canInsert(to, stack, slot, side)) {
@@ -293,5 +362,37 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
                 itemStack.increment(j);
             }
         }
+    }
+
+    public static boolean canMergeItems(ItemStack first, ItemStack second) {
+        if (!first.isOf(second.getItem())) {
+            return false;
+        }
+        if (first.getDamage() != second.getDamage()) {
+            return false;
+        }
+        if (first.getCount() + second.getCount() > first.getMaxCount()) {
+            return false;
+        }
+        return ItemStack.areNbtEqual(first, second);
+    }
+
+    public PropertyDelegate getPropertyDelegate() {
+        return propertyDelegate;
+    }
+
+    @Override
+    public Text getDisplayName() {
+        return this.customName != null ? this.customName : new TranslatableText("container.miniminer");
+    }
+
+    public void setCustomName(@Nullable Text customName) {
+        this.customName = customName;
+    }
+
+    @Nullable
+    @Override
+    public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+        return new MiniMinerScreenHandler(syncId, inv, this, propertyDelegate);
     }
 }

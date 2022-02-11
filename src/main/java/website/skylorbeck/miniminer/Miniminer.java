@@ -3,9 +3,13 @@ package website.skylorbeck.miniminer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.GeckoLib;
 import website.skylorbeck.minecraft.skylorlib.Registrar;
+import website.skylorbeck.miniminer.screen.MiniMinerScreenHandler;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,7 +27,7 @@ public class Miniminer implements ModInitializer {
         GeckoLib.initialize();
         Registrar.regBlock("miniminer", Declarar.MINIMINER, MODID);
         Registrar.regItem("miniminer", Declarar.MINIMINER_ITEM, MODID);
-
+        Declarar.MINIMINER_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(Miniminer.getId("miniminer_screen"), ((syncId,playerInventory) -> new MiniMinerScreenHandler(syncId, playerInventory,new SimpleInventory(1))));
         //todo abstract this to skylib
         if (!Files.exists(Paths.get("config/miniminer.json"))) {
             GsonBuilder gsonBuilder = new GsonBuilder();
