@@ -1,9 +1,6 @@
 package website.skylorbeck.miniminer.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -20,6 +17,8 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import website.skylorbeck.minecraft.skylorlib.storage.ExtraShulkerEntity;
@@ -93,5 +92,19 @@ public class MiniMinerBlock extends Block implements BlockEntityProvider {
         }
 
         super.onBreak(world, pos, state, player);
+    }
+    @Override
+    public float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
+        return 1.0f;
+    }
+
+    @Override
+    public boolean isTranslucent(BlockState state, BlockView world, BlockPos pos) {
+        return true;
+    }
+
+    @Override
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        return createCuboidShape(3, 0, 3, 13, 14, 13);
     }
 }

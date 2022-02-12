@@ -2,6 +2,7 @@ package website.skylorbeck.miniminer.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
+import net.minecraft.text.Text;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
