@@ -41,5 +41,7 @@ public class MiniMinerHandledScreen extends HandledScreen<MiniMinerScreenHandler
         }
         k = this.handler.getCookProgress();
         this.drawTexture(matrices, i + 84, j + 16, 176, 14, k + 1, 18);
+        if (k>=31)
+        this.drawTexture(matrices, i + 118, j + 17, 176, 33, 17, 17);
     }
 }
