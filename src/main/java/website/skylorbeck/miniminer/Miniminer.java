@@ -164,38 +164,21 @@ public class Miniminer implements ModInitializer {
                             }),
                     new MinerOreRewardMap(
                             "minecraft:deepslate",
-                            0,
-                            "minecraft:air",
+                            20,
+                            "minecraft:gravel",
                             new MinerOreRewardMap.WeightedReward[]{
                                     createReward("minecraft:cobbled_deepslate", 9),
                                     createReward("minecraft:coal", 1)
                             }),
                     new MinerOreRewardMap(
                             "minecraft:stone",
-                            0,
-                            "minecraft:air",
+                            20,
+                            "minecraft:gravel",
                             new MinerOreRewardMap.WeightedReward[]{
                                     createReward("minecraft:cobblestone", 9),
                                     createReward("minecraft:coal", 1)
                             }),
-                    new MinerOreRewardMap(
-                            "minecraft:sandstone",
-                            0,
-                            "minecraft:air",
-                            new MinerOreRewardMap.WeightedReward[]{
-                                    createReward("minecraft:sand", 9),
-                                    createReward("minecraft:coal", 1),
-                                    createReward("minecraft:bone_meal", 1)
-                            }),
-                    new MinerOreRewardMap(
-                            "minecraft:red_sandstone",
-                            0,
-                            "minecraft:air",
-                            new MinerOreRewardMap.WeightedReward[]{
-                                    createReward("minecraft:red_sand", 9),
-                                    createReward("minecraft:coal", 1),
-                                    createReward("minecraft:bone_meal", 1)
-                            }),
+
                     new MinerOreRewardMap(
                             "minecraft:granite",
                             0,
@@ -228,27 +211,7 @@ public class Miniminer implements ModInitializer {
                                     createReward("minecraft:calcite", 24),
                                     createReward("minecraft:amethyst_shard", 1)
                             }),
-                    new MinerOreRewardMap(
-                            "minecraft:dirt",
-                            0,
-                            "minecraft:air",
-                            new MinerOreRewardMap.WeightedReward[]{
-                                    createReward("minecraft:dirt", 15),
-                                    createReward("minecraft:wheat_seeds", 2),
-                                    createReward("minecraft:pumpkin_seeds", 2),
-                                    createReward("minecraft:melon_seeds", 2),
-                                    createReward("minecraft:beetroot_seeds", 2),
-                                    createReward("minecraft:carrot", 1),
-                                    createReward("minecraft:potato", 1),
-                                    createReward("minecraft:poisonous_potato", 1),
-                                    createReward("minecraft:oak_sapling", 1),
-                                    createReward("minecraft:spruce_sapling", 1),
-                                    createReward("minecraft:birch_sapling", 1),
-                                    createReward("minecraft:jungle_sapling", 1),
-                                    createReward("minecraft:acacia_sapling", 1),
-                                    createReward("minecraft:dark_oak_sapling", 1),
-                                    createReward("minecraft:bone_meal", 1)
-                            }),
+
                     new MinerOreRewardMap(
                             "minecraft:coarse_dirt",
                             20,
@@ -267,6 +230,24 @@ public class Miniminer implements ModInitializer {
                             new MinerOreRewardMap.WeightedReward[]{
                                     createReward("minecraft:gravel", 1),
                                     createReward("minecraft:flint", 7)
+                            }),
+                    new MinerOreRewardMap(
+                            "minecraft:sandstone",
+                            20,
+                            "minecraft:sand",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:sand", 9),
+                                    createReward("minecraft:coal", 1),
+                                    createReward("minecraft:bone_meal", 1)
+                            }),
+                    new MinerOreRewardMap(
+                            "minecraft:red_sandstone",
+                            20,
+                            "minecraft:red_sand",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:red_sand", 9),
+                                    createReward("minecraft:coal", 1),
+                                    createReward("minecraft:bone_meal", 1)
                             }),
                     new MinerOreRewardMap(
                             "minecraft:nether_gold_ore",
@@ -290,7 +271,28 @@ public class Miniminer implements ModInitializer {
                             "minecraft:air",
                             new MinerOreRewardMap.WeightedReward[]{
                                     createReward("minecraft:snowball", 1)
-                            })
+                            }),
+            new MinerOreRewardMap(
+                    "minecraft:dirt",
+                    0,
+                    "minecraft:air",
+                    new MinerOreRewardMap.WeightedReward[]{
+                            createReward("minecraft:dirt", 15),
+                            createReward("minecraft:wheat_seeds", 2),
+                            createReward("minecraft:pumpkin_seeds", 2),
+                            createReward("minecraft:melon_seeds", 2),
+                            createReward("minecraft:beetroot_seeds", 2),
+                            createReward("minecraft:carrot", 1),
+                            createReward("minecraft:potato", 1),
+                            createReward("minecraft:poisonous_potato", 1),
+                            createReward("minecraft:oak_sapling", 1),
+                            createReward("minecraft:spruce_sapling", 1),
+                            createReward("minecraft:birch_sapling", 1),
+                            createReward("minecraft:jungle_sapling", 1),
+                            createReward("minecraft:acacia_sapling", 1),
+                            createReward("minecraft:dark_oak_sapling", 1),
+                            createReward("minecraft:bone_meal", 1)
+                    })
             );
             try {
                 Files.write(Paths.get("config/miniminer.json"), gson.toJson(config).getBytes());

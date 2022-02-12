@@ -37,9 +37,9 @@ public class MiniMinerHandledScreen extends HandledScreen<MiniMinerScreenHandler
         this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
         if (this.handler.isBurning()) {
             k = this.handler.getFuelProgress();
-            this.drawTexture(matrices, i + 68, j + 32 - k, 176, 12 - k, 14, k + 1);
+            this.drawTexture(matrices, i + 66, j + 32 - k, 176, 12 - k, 14, k + 1);
         }
         k = this.handler.getCookProgress();
-        this.drawTexture(matrices, i + 86, j + 21, 176, 14, k + 1, 16);
+        this.drawTexture(matrices, i + 84, j + 16, 176, 14, k + 1, 18);
     }
 }

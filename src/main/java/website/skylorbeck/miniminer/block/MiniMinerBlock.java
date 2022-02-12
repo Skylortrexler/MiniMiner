@@ -8,9 +8,11 @@ import net.minecraft.block.entity.BeaconBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
@@ -20,6 +22,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import website.skylorbeck.minecraft.skylorlib.storage.ExtraShulkerEntity;
 import website.skylorbeck.miniminer.Declarar;
 import website.skylorbeck.miniminer.entity.MiniMinerBlockEntity;
 import website.skylorbeck.miniminer.screen.MiniMinerScreenHandler;
@@ -69,5 +72,26 @@ public class MiniMinerBlock extends Block implements BlockEntityProvider {
         if (itemStack.hasCustomName() && (blockEntity = world.getBlockEntity(pos)) instanceof MiniMinerBlockEntity) {
             ((MiniMinerBlockEntity)blockEntity).setCustomName(itemStack.getName());
         }
+    }
+    public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (blockEntity instanceof MiniMinerBlockEntity MiniMinerBlockEntity) {
+            if (!world.isClient ) {
+
+                ItemStack itemStack = this.asItem().getDefaultStack();
+
+                if (MiniMinerBlockEntity.hasCustomName()) {
+                    itemStack.setCustomName(MiniMinerBlockEntity.getDisplayName());
+                }
+
+                ItemEntity itemEntity = new ItemEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, itemStack);
+                itemEntity.setToDefaultPickupDelay();
+                world.spawnEntity(itemEntity);
+                itemEntity = new ItemEntity(world, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, MiniMinerBlockEntity.getFuelInventory().get(0));
+                world.spawnEntity(itemEntity);
+            }
+        }
+
+        super.onBreak(world, pos, state, player);
     }
 }

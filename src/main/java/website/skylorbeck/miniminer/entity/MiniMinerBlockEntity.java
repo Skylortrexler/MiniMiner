@@ -386,6 +386,10 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
         return this.customName != null ? this.customName : new TranslatableText("container.miniminer");
     }
 
+    public boolean hasCustomName(){
+        return this.customName != null;
+    }
+
     public void setCustomName(@Nullable Text customName) {
         this.customName = customName;
     }

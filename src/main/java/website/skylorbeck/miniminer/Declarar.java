@@ -19,7 +19,7 @@ import website.skylorbeck.miniminer.screen.MiniMinerScreenHandler;
 
 public class Declarar {
     public static final ItemGroup MINIMINER_GROUP = FabricItemGroupBuilder.build(Miniminer.getId("category"),() -> new ItemStack(Declarar.MINIMINER_ITEM));
-    public static final Block MINIMINER = new MiniMinerBlock(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).nonOpaque().lightLevel(5));
+    public static final Block MINIMINER = new MiniMinerBlock(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).nonOpaque().lightLevel(5).breakByHand(true));
     public static final Item MINIMINER_ITEM = new MiniMinerItem(MINIMINER, new FabricItemSettings().group(MINIMINER_GROUP));
     public static final BlockEntityType<MiniMinerBlockEntity> MINI_MINER_BLOCK_ENTITY_TYPE = Registry.register(
             Registry.BLOCK_ENTITY_TYPE, Miniminer.getId("miniminer_entity") ,
