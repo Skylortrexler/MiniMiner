@@ -35,7 +35,6 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-import website.skylorbeck.minecraft.skylorlib.furnaces.AbstractExtraFurnaceBlockEntity;
 import website.skylorbeck.minecraft.skylorlib.storage.StorageUtils;
 import website.skylorbeck.miniminer.Declarar;
 import website.skylorbeck.miniminer.Miniminer;

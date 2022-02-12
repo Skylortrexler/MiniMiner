@@ -12,7 +12,6 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
 import website.skylorbeck.miniminer.Declarar;
-import website.skylorbeck.miniminer.Miniminer;
 
 public class MiniMinerScreenHandler extends ScreenHandler {
     private final ScreenHandlerContext context;

@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.GeckoLib;
 import website.skylorbeck.minecraft.skylorlib.Registrar;
