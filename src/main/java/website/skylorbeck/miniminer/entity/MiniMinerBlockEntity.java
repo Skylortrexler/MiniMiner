@@ -163,7 +163,7 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
                             break;
                         }
                     }
-                } else if (!world.isClient) {//necessary?
+                } else {
                     ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), reward.get());
                     itemEntity.setPos(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
                     itemEntity.setVelocity(world.random.nextFloat(-0.5f, 0.5f), 0, world.random.nextFloat(-0.5f, 0.5f));
