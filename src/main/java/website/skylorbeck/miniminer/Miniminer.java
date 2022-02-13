@@ -1,8 +1,6 @@
 package website.skylorbeck.miniminer;
 
 import com.google.common.collect.Lists;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.inventory.SimpleInventory;
@@ -16,8 +14,6 @@ import website.skylorbeck.minecraft.skylorlib.Registrar;
 import website.skylorbeck.miniminer.screen.MiniMinerScreenHandler;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -33,7 +29,7 @@ public class Miniminer implements ModInitializer {
         Registrar.regItem("miniminer", Declarar.MINIMINER_ITEM, MODID);
         Declarar.MINIMINER_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(Miniminer.getId("miniminer_screen"), ((syncId,playerInventory) -> new MiniMinerScreenHandler(syncId, playerInventory,new SimpleInventory(1))));
 
-//region config init
+        //region config init
         config.add(
                 new MinerOreRewardMap(
                         "minecraft:deepslate_diamond_ore",
