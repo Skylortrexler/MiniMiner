@@ -35,12 +35,14 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-import website.skylorbeck.minecraft.skylorlib.storage.StorageUtils;
 import website.skylorbeck.miniminer.Declarar;
 import website.skylorbeck.miniminer.Miniminer;
 import website.skylorbeck.miniminer.screen.MiniMinerScreenHandler;
 
 import java.util.concurrent.atomic.AtomicReference;
+
+import static website.skylorbeck.minecraft.skylorlib.storage.StorageUtils.canMergeItems;
+import static website.skylorbeck.minecraft.skylorlib.storage.StorageUtils.transfer;
 
 public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, Inventory, NamedScreenHandlerFactory {
 
@@ -164,7 +166,7 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
                 } else if (!world.isClient) {//necessary?
                     ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), reward.get());
                     itemEntity.setPos(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
-                    itemEntity.setVelocity(world.random.nextFloat(-1f, 1f), 0, world.random.nextFloat(-1f, 1f));
+                    itemEntity.setVelocity(world.random.nextFloat(-0.5f, 0.5f), 0, world.random.nextFloat(-0.5f, 0.5f));
                     world.spawnEntity(itemEntity);
                 }
                 entity.setDigAmount(0);
@@ -348,33 +350,9 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
         fuelInventory.clear();
     }
 
-    private static void transfer(Inventory to, ItemStack stack, int slot, @Nullable Direction side) {
-        ItemStack itemStack = to.getStack(slot);
-        if (StorageUtils.canInsert(to, stack, slot, side)) {
-            if (itemStack.isEmpty()) {
-                to.setStack(slot, stack);
-                stack = ItemStack.EMPTY;
-            } else if (StorageUtils.canMergeItems(itemStack, stack)) {
-                int i = stack.getMaxCount() - itemStack.getCount();
-                int j = Math.min(stack.getCount(), i);
-                stack.decrement(j);
-                itemStack.increment(j);
-            }
-        }
-    }
 
-    public static boolean canMergeItems(ItemStack first, ItemStack second) {
-        if (!first.isOf(second.getItem())) {
-            return false;
-        }
-        if (first.getDamage() != second.getDamage()) {
-            return false;
-        }
-        if (first.getCount() + second.getCount() > first.getMaxCount()) {
-            return false;
-        }
-        return ItemStack.areNbtEqual(first, second);
-    }
+
+
 
     public PropertyDelegate getPropertyDelegate() {
         return propertyDelegate;
