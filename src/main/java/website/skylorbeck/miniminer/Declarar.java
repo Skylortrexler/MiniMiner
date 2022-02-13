@@ -1,5 +1,6 @@
 package website.skylorbeck.miniminer;
 
+import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -26,4 +27,5 @@ public class Declarar {
             FabricBlockEntityTypeBuilder.create(MiniMinerBlockEntity::new, MINIMINER).build(null));
 
     public static ScreenHandlerType<MiniMinerScreenHandler> MINIMINER_SCREEN_HANDLER;
+    public static JsonObject MINIMINER_CRAFTING_RECIPE;
 }

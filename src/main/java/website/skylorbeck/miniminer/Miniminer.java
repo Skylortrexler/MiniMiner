@@ -1,12 +1,16 @@
 package website.skylorbeck.miniminer;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import software.bernie.geckolib3.GeckoLib;
+import website.skylorbeck.minecraft.skylorlib.DynamicRecipeLoader;
 import website.skylorbeck.minecraft.skylorlib.Registrar;
 import website.skylorbeck.miniminer.screen.MiniMinerScreenHandler;
 
@@ -307,6 +311,13 @@ public class Miniminer implements ModInitializer {
                 e.printStackTrace();
             }
         }
+        Declarar.MINIMINER_CRAFTING_RECIPE = DynamicRecipeLoader.createShapedRecipeJson(
+                com.google.common.collect.Lists.newArrayList(Registry.ITEM.getId(Items.OBSIDIAN), Registry.ITEM.getId(Items.END_STONE), Registry.ITEM.getId(Items.ENDER_EYE), Registry.ITEM.getId(Items.BLAZE_ROD), Registry.ITEM.getId(Items.AMETHYST_SHARD)),//items
+                com.google.common.collect.Lists.newArrayList(false, false,false,false,false),//type
+                Lists.newArrayList("020", "131", " 4 "),//pattern
+                Registry.ITEM.getId(Declarar.MINIMINER_ITEM),//result
+                1//amount
+        );
     }
 
     public static class Config {

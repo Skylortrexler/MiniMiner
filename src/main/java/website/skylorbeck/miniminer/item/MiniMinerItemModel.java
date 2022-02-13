@@ -18,18 +18,6 @@ public class MiniMinerItemModel extends AnimatedGeoModel<MiniMinerItem> {
 
     @Override
     public Identifier getTextureLocation(MiniMinerItem entity) {
-        String name = entity.getName().asString();
-        if (name.equalsIgnoreCase("asthetic")){
-            return Miniminer.getId("textures/asthetic.png");
-        } else if (name.equalsIgnoreCase("citrus")){
-            return Miniminer.getId("textures/citrus.png");
-        } else if (name.equalsIgnoreCase("fancy")){
-            return Miniminer.getId("textures/fancy.png");
-        } else if (name.equalsIgnoreCase("icecream")){
-            return Miniminer.getId("textures/icecream.png");
-        } else if (name.equalsIgnoreCase("maliwat")){
-            return Miniminer.getId("textures/maliwat.png");
-        } else
         return Miniminer.getId("textures/main.png");
     }
 
