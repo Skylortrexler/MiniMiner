@@ -19,7 +19,7 @@ public class MiniMinerModel extends AnimatedGeoModel<MiniMinerBlockEntity> {
     @Override
     public Identifier getTextureLocation(MiniMinerBlockEntity entity) {
         String name = entity.getDisplayName().asString();
-        if (name.equalsIgnoreCase("asthetic")){
+        if (name.equalsIgnoreCase("NoobGamer")){
             return Miniminer.getId("textures/asthetic.png");
         } else if (name.equalsIgnoreCase("citrus")){
             return Miniminer.getId("textures/citrus.png");
@@ -35,7 +35,7 @@ public class MiniMinerModel extends AnimatedGeoModel<MiniMinerBlockEntity> {
             return Miniminer.getId("textures/hyperiron.png");
         } else if (name.equalsIgnoreCase("SkylorBeck")){
             return Miniminer.getId("textures/skylor.png");
-        } else if (name.equalsIgnoreCase("error")){
+        } else if (name.equalsIgnoreCase("Striker")){
             return Miniminer.getId("textures/error.png");
         } else
         return Miniminer.getId("textures/main.png");

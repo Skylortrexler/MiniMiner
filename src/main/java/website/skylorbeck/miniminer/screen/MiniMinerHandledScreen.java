@@ -1,6 +1,7 @@
 package website.skylorbeck.miniminer.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -42,5 +43,6 @@ public class MiniMinerHandledScreen extends HandledScreen<MiniMinerScreenHandler
         this.drawTexture(matrices, i + 84, j + 16, 176, 14, k + 1, 18);
         if (k>=31)
         this.drawTexture(matrices, i + 118, j + 17, 176, 33, 17, 17);
+//        MinecraftClient.getInstance().inGameHud.getTextRenderer().draw(matrices,"# "+this.handler.getTotalMined(), (float)(i + 92), (float)(j + 6), 4210752);
     }
 }

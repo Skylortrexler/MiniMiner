@@ -95,4 +95,7 @@ public class MiniMinerScreenHandler extends ScreenHandler {
     public int getCookProgress() {
         return this.propertyDelegate.get(1)*16/100;
     }
+    public int getTotalMined() {
+        return this.propertyDelegate.get(2);
+    }
 }
