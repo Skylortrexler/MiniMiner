@@ -208,17 +208,23 @@ public class Miniminer implements ModInitializer {
                                 createReward("minecraft:calcite", 24),
                                 createReward("minecraft:amethyst_shard", 1)
                         }),
-
+                new MinerOreRewardMap(
+                        "minecraft:podzol",
+                        20,
+                        "minecraft:dirt",
+                        new MinerOreRewardMap.WeightedReward[]{
+                                createReward("minecraft:dirt", 2),
+                                createReward("minecraft:brown_mushroom", 1),
+                                createReward("minecraft:red_mushroom", 1),
+                                createReward("minecraft:bone", 1)
+                        }),
                 new MinerOreRewardMap(
                         "minecraft:coarse_dirt",
                         20,
                         "minecraft:dirt",
                         new MinerOreRewardMap.WeightedReward[]{
                                 createReward("minecraft:dirt", 2),
-                                createReward("minecraft:cobblestone", 2),
-                                createReward("minecraft:brown_mushroom", 1),
-                                createReward("minecraft:red_mushroom", 1),
-                                createReward("minecraft:bone", 1)
+                                createReward("minecraft:gravel", 2),
                         }),
                 new MinerOreRewardMap(
                         "minecraft:gravel",
