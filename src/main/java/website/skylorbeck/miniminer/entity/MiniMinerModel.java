@@ -23,15 +23,15 @@ public class MiniMinerModel extends AnimatedGeoModel<MiniMinerBlockEntity> {
             return Miniminer.getId("textures/asthetic.png");
         } else if (name.equalsIgnoreCase("citrus")){
             return Miniminer.getId("textures/citrus.png");
-        } else if (name.equalsIgnoreCase("fancy")){
+        } else if (name.equalsIgnoreCase("halfrottenegg")){
             return Miniminer.getId("textures/fancy.png");
-        } else if (name.equalsIgnoreCase("icecream")){
+        } else if (name.equalsIgnoreCase("tigris")){
             return Miniminer.getId("textures/icecream.png");
         } else if (name.equalsIgnoreCase("maliwat")){
             return Miniminer.getId("textures/maliwat.png");
         } else if (name.equalsIgnoreCase("r2zoo")){
             return Miniminer.getId("textures/rickard.png");
-        } else if (name.equalsIgnoreCase("hyperiron")){
+        } else if (name.equalsIgnoreCase("jafjay")){
             return Miniminer.getId("textures/hyperiron.png");
         } else if (name.equalsIgnoreCase("SkylorBeck")){
             return Miniminer.getId("textures/skylor.png");
