@@ -1,8 +1,10 @@
 package website.skylorbeck.miniminer;
 
 import com.google.common.collect.Lists;
+import com.terraformersmc.modmenu.util.mod.fabric.FabricMod;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
@@ -28,7 +30,268 @@ public class Miniminer implements ModInitializer {
         Registrar.regBlock("miniminer", Declarar.MINIMINER, MODID);
         Registrar.regItem("miniminer", Declarar.MINIMINER_ITEM, MODID);
         Declarar.MINIMINER_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(Miniminer.getId("miniminer_screen"), ((syncId,playerInventory) -> new MiniMinerScreenHandler(syncId, playerInventory,new SimpleInventory(1))));
-
+        //region Mores init
+        if (FabricLoader.getInstance().isModLoaded("mores")) {
+            config.add(
+                    new MinerOreRewardMap(
+                            "mores:granite_coal_ore",
+                            4,
+                            "minecraft:granite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:coal", 5),
+                                    createReward("minecraft:granite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:andesite_coal_ore",
+                            4,
+                            "minecraft:andesite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:coal", 5),
+                                    createReward("minecraft:andesite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:diorite_coal_ore",
+                            4,
+                            "minecraft:diorite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:coal", 5),
+                                    createReward("minecraft:diorite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:tuff_coal_ore",
+                            4,
+                            "minecraft:tuff",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:coal", 5),
+                                    createReward("minecraft:tuff", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:granite_iron_ore",
+                            4,
+                            "minecraft:granite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:raw_iron", 5),
+                                    createReward("minecraft:granite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:andesite_iron_ore",
+                            4,
+                            "minecraft:andesite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:raw_iron", 5),
+                                    createReward("minecraft:andesite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:diorite_iron_ore",
+                            4,
+                            "minecraft:diorite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:raw_iron", 5),
+                                    createReward("minecraft:diorite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:tuff_iron_ore",
+                            4,
+                            "minecraft:tuff",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:raw_iron", 5),
+                                    createReward("minecraft:tuff", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:granite_gold_ore",
+                            4,
+                            "minecraft:granite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:raw_gold", 5),
+                                    createReward("minecraft:granite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:andesite_gold_ore",
+                            4,
+                            "minecraft:andesite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:raw_gold", 5),
+                                    createReward("minecraft:andesite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:diorite_gold_ore",
+                            4,
+                            "minecraft:diorite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:raw_gold", 5),
+                                    createReward("minecraft:diorite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:tuff_gold_ore",
+                            4,
+                            "minecraft:tuff",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:raw_gold", 5),
+                                    createReward("minecraft:tuff", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:granite_copper_ore",
+                            4,
+                            "minecraft:granite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:raw_copper", 5),
+                                    createReward("minecraft:granite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:andesite_copper_ore",
+                            4,
+                            "minecraft:andesite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:raw_copper", 5),
+                                    createReward("minecraft:andesite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:diorite_copper_ore",
+                            4,
+                            "minecraft:diorite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:raw_copper", 5),
+                                    createReward("minecraft:diorite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:tuff_copper_ore",
+                            4,
+                            "minecraft:tuff",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:raw_copper", 5),
+                                    createReward("minecraft:tuff", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:granite_redstone_ore",
+                            4,
+                            "minecraft:granite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:redstone", 5),
+                                    createReward("minecraft:granite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:andesite_redstone_ore",
+                            4,
+                            "minecraft:andesite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:redstone", 5),
+                                    createReward("minecraft:andesite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:diorite_redstone_ore",
+                            4,
+                            "minecraft:diorite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:redstone", 5),
+                                    createReward("minecraft:diorite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:tuff_redstone_ore",
+                            4,
+                            "minecraft:tuff",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:redstone", 5),
+                                    createReward("minecraft:tuff", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:granite_lapis_ore",
+                            4,
+                            "minecraft:granite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:lapis_lazuli", 5),
+                                    createReward("minecraft:granite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:andesite_lapis_ore",
+                            4,
+                            "minecraft:andesite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:lapis_lazuli", 5),
+                                    createReward("minecraft:andesite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:diorite_lapis_ore",
+                            4,
+                            "minecraft:diorite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:lapis_lazuli", 5),
+                                    createReward("minecraft:diorite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:tuff_lapis_ore",
+                            4,
+                            "minecraft:tuff",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:lapis_lazuli", 5),
+                                    createReward("minecraft:tuff", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:granite_diamond_ore",
+                            4,
+                            "minecraft:granite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:diamond", 5),
+                                    createReward("minecraft:granite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:andesite_diamond_ore",
+                            4,
+                            "minecraft:andesite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:diamond", 5),
+                                    createReward("minecraft:andesite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:diorite_diamond_ore",
+                            4,
+                            "minecraft:diorite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:diamond", 5),
+                                    createReward("minecraft:diorite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:tuff_diamond_ore",
+                            4,
+                            "minecraft:tuff",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:diamond", 5),
+                                    createReward("minecraft:tuff", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:granite_emerald_ore",
+                            4,
+                            "minecraft:granite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:emerald", 5),
+                                    createReward("minecraft:granite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:andesite_emerald_ore",
+                            4,
+                            "minecraft:andesite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:emerald", 5),
+                                    createReward("minecraft:andesite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:diorite_emerald_ore",
+                            4,
+                            "minecraft:diorite",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:emerald", 5),
+                                    createReward("minecraft:diorite", 3)
+                            }),
+                    new MinerOreRewardMap(
+                            "mores:tuff_emerald_ore",
+                            4,
+                            "minecraft:tuff",
+                            new MinerOreRewardMap.WeightedReward[]{
+                                    createReward("minecraft:emerald", 5),
+                                    createReward("minecraft:tuff", 3)
+                            })
+            );
+        }
+        //endregion in
         //region config init
         config.add(
                 new MinerOreRewardMap(
@@ -298,6 +561,7 @@ public class Miniminer implements ModInitializer {
                         })
         );
 //endregion
+
 
         try {
             config = ConfigFileHandler.initConfigFile("miniminer.json",config);

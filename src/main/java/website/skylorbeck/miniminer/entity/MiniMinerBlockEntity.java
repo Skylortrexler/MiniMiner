@@ -11,6 +11,7 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -95,7 +96,11 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
             entity.setFuelAmount(FuelRegistry.INSTANCE.get(item));
             entity.setFuelAmountMax(FuelRegistry.INSTANCE.get(item));
             entity.setMachineStateOn(true);
-            entity.removeStack(0, 1);
+            if (item.equals(Items.LAVA_BUCKET)) {
+                entity.setStack(0, new ItemStack(Items.BUCKET));
+            } else {
+                entity.removeStack(0, 1);
+            }
         }
         if (fuelAmount > 0) {
             entity.setDigAmount(entity.getDigAmount() + 1);
