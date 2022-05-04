@@ -157,7 +157,7 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
                 }
                 BlockPos upOne = pos.up(1);
                 if (world.getBlockEntity(upOne) != null && world.getBlockState(upOne).getBlock() instanceof ChestBlock chestBlock) {
-                    Inventory chestInventory = ChestBlock.getInventory(chestBlock, world.getBlockState(upOne), world, upOne, false);
+                    Inventory chestInventory = ChestBlock.getInventory(chestBlock, world.getBlockState(upOne), world, upOne, true);
                     for (int i = 0; i < chestInventory.size(); ++i) {
                         if (canMergeItems(chestInventory.getStack(i), reward.get())) {
                             transfer(chestInventory, reward.get(), i, Direction.UP);
@@ -354,10 +354,6 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
     public void clear() {
         fuelInventory.clear();
     }
-
-
-
-
 
     public PropertyDelegate getPropertyDelegate() {
         return propertyDelegate;

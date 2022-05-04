@@ -563,11 +563,7 @@ public class Miniminer implements ModInitializer {
 //endregion
 
 
-        try {
             config = ConfigFileHandler.initConfigFile("miniminer.json",config);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         Declarar.MINIMINER_CRAFTING_RECIPE = DynamicRecipeLoader.createShapedRecipeJson(
                 com.google.common.collect.Lists.newArrayList(Registry.ITEM.getId(Items.OBSIDIAN), Registry.ITEM.getId(Items.END_STONE), Registry.ITEM.getId(Items.ENDER_EYE), Registry.ITEM.getId(Items.BLAZE_ROD), Registry.ITEM.getId(Items.AMETHYST_SHARD)),//items
