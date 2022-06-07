@@ -1,4 +1,4 @@
-package website.skylorbeck.miniminer.block;
+package website.skylorbeck.minecraft.miniminer.block;
 
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -18,9 +18,9 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import website.skylorbeck.miniminer.Declarar;
-import website.skylorbeck.miniminer.entity.MiniMinerBlockEntity;
-import website.skylorbeck.miniminer.screen.MiniMinerScreenHandler;
+import website.skylorbeck.minecraft.miniminer.entity.MiniMinerBlockEntity;
+import website.skylorbeck.minecraft.miniminer.screen.MiniMinerScreenHandler;
+import website.skylorbeck.minecraft.miniminer.Declarar;
 
 public class MiniMinerBlock extends Block implements BlockEntityProvider {
     public MiniMinerBlock(Settings settings) {

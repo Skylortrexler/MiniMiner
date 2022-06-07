@@ -1,4 +1,4 @@
-package website.skylorbeck.miniminer.entity;
+package website.skylorbeck.minecraft.miniminer.entity;
 
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -17,7 +17,7 @@ public class MiniMinerRenderer extends GeoBlockRenderer<MiniMinerBlockEntity> {
     public RenderLayer getRenderType(MiniMinerBlockEntity animatable, float partialTicks, MatrixStack stack,
                                      VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn,
                                      Identifier textureLocation) {
-        return RenderLayer.getEntityCutout(getTextureLocation(animatable));
+        return RenderLayer.getEntityCutout(getTextureResource(animatable));
     }
 
     @Override

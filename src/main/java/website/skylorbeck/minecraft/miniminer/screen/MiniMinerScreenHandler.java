@@ -1,4 +1,4 @@
-package website.skylorbeck.miniminer.screen;
+package website.skylorbeck.minecraft.miniminer.screen;
 
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.block.Block;
@@ -11,7 +11,7 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
-import website.skylorbeck.miniminer.Declarar;
+import website.skylorbeck.minecraft.miniminer.Declarar;
 
 public class MiniMinerScreenHandler extends ScreenHandler {
     private final ScreenHandlerContext context;

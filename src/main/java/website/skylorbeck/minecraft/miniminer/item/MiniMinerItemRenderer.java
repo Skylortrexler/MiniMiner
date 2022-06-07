@@ -1,4 +1,4 @@
-package website.skylorbeck.miniminer.item;
+package website.skylorbeck.minecraft.miniminer.item;
 
 import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
 

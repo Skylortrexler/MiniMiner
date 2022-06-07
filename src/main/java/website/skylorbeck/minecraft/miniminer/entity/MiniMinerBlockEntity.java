@@ -1,4 +1,4 @@
-package website.skylorbeck.miniminer.entity;
+package website.skylorbeck.minecraft.miniminer.entity;
 
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.block.BlockState;
@@ -21,7 +21,6 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -36,9 +35,9 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-import website.skylorbeck.miniminer.Declarar;
-import website.skylorbeck.miniminer.Miniminer;
-import website.skylorbeck.miniminer.screen.MiniMinerScreenHandler;
+import website.skylorbeck.minecraft.miniminer.Miniminer;
+import website.skylorbeck.minecraft.miniminer.screen.MiniMinerScreenHandler;
+import website.skylorbeck.minecraft.miniminer.Declarar;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -171,7 +170,7 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
                 } else {
                     ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), reward.get());
                     itemEntity.setPos(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
-                    itemEntity.setVelocity(world.random.nextFloat(-0.5f, 0.5f), 0, world.random.nextFloat(-0.5f, 0.5f));
+                    itemEntity.setVelocity(world.random.nextFloat()-0.5f, 0, world.random.nextFloat()-0.5f);
                     world.spawnEntity(itemEntity);
                 }
                 entity.setDigAmount(0);
@@ -361,7 +360,7 @@ public class MiniMinerBlockEntity extends BlockEntity implements IAnimatable, In
 
     @Override
     public Text getDisplayName() {
-        return this.customName != null ? this.customName : new TranslatableText("container.miniminer");
+        return this.customName != null ? this.customName : Text.translatable("container.miniminer");
     }
 
     public boolean hasCustomName(){

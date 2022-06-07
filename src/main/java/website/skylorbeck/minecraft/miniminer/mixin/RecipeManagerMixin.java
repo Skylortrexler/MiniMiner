@@ -1,4 +1,4 @@
-package website.skylorbeck.miniminer.mixin;
+package website.skylorbeck.minecraft.miniminer.mixin;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import website.skylorbeck.miniminer.Declarar;
-import website.skylorbeck.miniminer.Miniminer;
+import website.skylorbeck.minecraft.miniminer.Miniminer;
+import website.skylorbeck.minecraft.miniminer.Declarar;
 
 import java.util.Map;
 import java.util.function.BiFunction;

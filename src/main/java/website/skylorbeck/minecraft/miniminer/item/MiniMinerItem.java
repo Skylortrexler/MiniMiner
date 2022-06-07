@@ -1,4 +1,4 @@
-package website.skylorbeck.miniminer.item;
+package website.skylorbeck.minecraft.miniminer.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;

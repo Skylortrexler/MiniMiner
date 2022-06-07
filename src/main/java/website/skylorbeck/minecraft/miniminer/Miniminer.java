@@ -1,7 +1,6 @@
-package website.skylorbeck.miniminer;
+package website.skylorbeck.minecraft.miniminer;
 
 import com.google.common.collect.Lists;
-import com.terraformersmc.modmenu.util.mod.fabric.FabricMod;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.loader.api.FabricLoader;
@@ -10,16 +9,15 @@ import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import software.bernie.geckolib3.GeckoLib;
+import website.skylorbeck.minecraft.miniminer.screen.MiniMinerScreenHandler;
 import website.skylorbeck.minecraft.skylorlib.ConfigFileHandler;
 import website.skylorbeck.minecraft.skylorlib.DynamicRecipeLoader;
 import website.skylorbeck.minecraft.skylorlib.Registrar;
-import website.skylorbeck.miniminer.screen.MiniMinerScreenHandler;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static website.skylorbeck.miniminer.Miniminer.MinerOreRewardMap.WeightedReward.createReward;
+import static website.skylorbeck.minecraft.miniminer.Miniminer.MinerOreRewardMap.WeightedReward.createReward;
 
 public class Miniminer implements ModInitializer {
     public static Config config = new Config();

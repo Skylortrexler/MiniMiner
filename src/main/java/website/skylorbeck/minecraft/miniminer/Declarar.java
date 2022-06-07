@@ -1,4 +1,4 @@
-package website.skylorbeck.miniminer;
+package website.skylorbeck.minecraft.miniminer;
 
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
@@ -13,10 +13,10 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.registry.Registry;
-import website.skylorbeck.miniminer.block.MiniMinerBlock;
-import website.skylorbeck.miniminer.entity.MiniMinerBlockEntity;
-import website.skylorbeck.miniminer.item.MiniMinerItem;
-import website.skylorbeck.miniminer.screen.MiniMinerScreenHandler;
+import website.skylorbeck.minecraft.miniminer.block.MiniMinerBlock;
+import website.skylorbeck.minecraft.miniminer.entity.MiniMinerBlockEntity;
+import website.skylorbeck.minecraft.miniminer.screen.MiniMinerScreenHandler;
+import website.skylorbeck.minecraft.miniminer.item.MiniMinerItem;
 
 public class Declarar {
     public static final ItemGroup MINIMINER_GROUP = FabricItemGroupBuilder.build(Miniminer.getId("category"),() -> new ItemStack(Declarar.MINIMINER_ITEM));

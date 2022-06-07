@@ -1,24 +1,24 @@
-package website.skylorbeck.miniminer.entity;
+package website.skylorbeck.minecraft.miniminer.entity;
 
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
-import website.skylorbeck.miniminer.Miniminer;
+import website.skylorbeck.minecraft.miniminer.Miniminer;
 
 public class MiniMinerModel extends AnimatedGeoModel<MiniMinerBlockEntity> {
     @Override
-    public Identifier getAnimationFileLocation(MiniMinerBlockEntity entity) {
+    public Identifier getAnimationResource(MiniMinerBlockEntity entity) {
         return Miniminer.getId("animations/miner.animation.json");
     }
 
     @Override
-    public Identifier getModelLocation(MiniMinerBlockEntity animatable) {
+    public Identifier getModelResource(MiniMinerBlockEntity animatable) {
         return Miniminer.getId("geo/miniminer.geo.json");
     }
 
     @Override
-    public Identifier getTextureLocation(MiniMinerBlockEntity entity) {
-        String name = entity.getDisplayName().asString();
+    public Identifier getTextureResource(MiniMinerBlockEntity entity) {
+        String name = entity.getDisplayName().getString();
         if (name.equalsIgnoreCase("NoobGamer")){
             return Miniminer.getId("textures/asthetic.png");
         } else if (name.equalsIgnoreCase("citrus")){
